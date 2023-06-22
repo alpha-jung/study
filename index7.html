@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            /*
+                getter, setter 를 사용하는 이유
+
+                1. Object 자료가 복잡할 때 이득
+                ex) person.age1.age2.age3...
+
+                2. Object 자료 수정 시 편리
+                ex) person.age = '20';
+                => 숫자 대신 문자 입력하는 실수를 방지 가능
+            */
+
+            let person = {
+                name : 'Park',
+                age : 30,
+                nextAge() {
+                    return this.age + 1;
+                },
+                setAge(age) {
+                    this.age = parseInt(age);
+                }
+                /*
+                    ES5 에서 사용 가능한 get, set 방식
+                    
+                    get nextAge() {
+                        return this.age + 1;
+                    }
+
+                    set setAge(age) {
+                        this.age = parseInt(age);
+                    }
+
+                    person.setAge = '20';
+                    person.nextAge;
+
+                    ** 특징
+                    1. get 함수는 return 이 있어야 하고 파라미터는 없어야 함
+                    2. set 함수는 파라미터가 1개 이상 있어야 함
+                */
+            }
+
+            person.setAge('20');
+
+
+            class person2 {
+                constructor() {
+                    this.name = 'Park';
+                    this.age = 20;
+                }
+
+                getAge() {
+                    return this.age + 1;
+                }
+
+                setAge(age) {
+                    this.age = parseInt(age);
+                }
+
+                /*
+                    class 에서도 get, set 사용 가능
+                    
+                    get getAge() {
+                        return this.age + 1;
+                    }
+
+                    set setAge(age) {
+                        this.age = parseInt(age);
+                    }
+                */
+            }
+                     
+            let instPerson = new person2();
+
+
+            // exam1.
+            class Dog {
+                constructor(type, color) {
+                    this.type = type;
+                    this.color = color;
+                }
+
+                // exam3.
+                nextAge() {
+                    if(this instanceof Cat) {
+                        this.age++;
+                    }
+                }
+            }
+
+            let dog1 = new Dog('말티즈', 'white');
+            let dog2 = new Dog('진돗개', 'brown');
+
+            
+            // exam2.
+            class Cat extends Dog {
+                constructor(type, color, age) {
+                    super(type, color);
+                    this.age = age;
+                }
+            }
+
+            let cat1 = new Cat('코숏', 'white', 5);
+            let cat2 = new Cat('러시안블루', 'blue', 2);
+
+
+            // exam4.
+            class Unit {
+                constructor() {
+                    this.damage = 5;
+                    this.health = 100;
+                }
+
+                get battlePoint() {
+                    return this.damage + this.health;
+                }
+
+                set heal(value) {
+                    this.health += value;
+                }
+            }
+
+            let unit = new Unit();
+            console.log(unit.battlePoint);
+            unit.heal = 50;
+            console.log(unit.battlePoint);
+
+
+            // exam5.
+            let data = {
+                odd : [],
+                even : [],
+                save(...val) {
+                    for(let i = 0; i < val.length; i++) {
+                        if(val[i] % 2 == 0) {
+                            this.even.push(val[i]);
+                        } else {
+                            this.odd.push(val[i]);
+                        }
+                    }
+                },
+                get show() {
+                    // console.log(this.odd.sort());
+                    // console.log(this.even.sort());
+
+                    return [...this.odd, ...this.even].sort();
+                }
+            }
+
+            data.save(1,2,3,4,5);
+            console.log(data.show);
+        </script>
+    </body>
+</html>

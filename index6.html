@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            /*
+                ** Primitive data type
+                숫자와 문자같은 데이터가 해당
+                값을 대입 시, 그대로 저장
+
+                
+                ** Reference data type
+                Array, Object 는 변수에 값이 저장이 안됨
+                변수에 값이 아닌 reference(화살표) 가 저장됨
+                -> 이 자료는 메모리 어딘가에 있어요 라는 화살표가 저장됐다는 의미
+
+            */
+
+            let num = 1234;
+            let arr = [1,2,3];
+            let obj = { name: 'Kim' };
+
+            let name1 = 'Kim';
+            let name2 = name1;
+            name1 = 'Park';
+            console.log(name2);
+
+            let name3 = { name: 'Kim' };
+            let name4 = name3;  // name3 의 화살표를 복사
+            name3.name = 'Park';
+            console.log(name4.name);
+
+            let name5 = { name : 'Kim' };
+            let name6 = { name : 'Kim' };
+
+            function change(obj) {
+                // obj.name = 'Park';
+
+                // 재할당했으나 변경되지 않음
+                // 파라미터는 변수 생성 & 할당과 같음
+                // var obj 와 같은 의미
+                // change(var obj = name6); 와 같은 의미
+                // 즉, 값 변경은 되나 할당할 경우 새로운 화살표를 생성하기에 기존 변수는 변하지 않음
+                obj = { name : 'Park' };
+            }
+
+            change(name6);
+
+
+            /*
+                ** Constructor
+                용도 : Object 를 복사하고 싶을 때 사용 ( 비슷한 Object 를 쉽게 찍어낼 수 있음 )
+                
+
+            */
+
+            let student1 = { 
+                name : 'Kim',
+                age : 15,
+                sayHi : function() {
+                    console.log(`안녕하세요. 저는 ${this.name}입니다.`);
+                }
+            };
+
+            student1.sayHi();
+            
+            function Student(name, age) {
+                // 이 this 는 새로 생성되는 Object (instance) 를 뜻함
+                this.name = name;
+                this.age = age;
+                // this.sayHi = function() {
+                //     console.log(`안녕하세요. 저는 ${this.name}입니다.`);
+                // }
+            }
+
+            // 상속 ( Student 가 가지고 있는 속성들을 물려받음 )
+            let student2 = new Student('Park', 20);
+            //student2.sayHi();
+
+
+
+            function Product(name, price) {
+                this.name = name;
+                this.price = price;
+                this.info = function() {
+                    console.log(`상품명 : ${this.name} / 가격 : ${this.price}`);
+                },
+                this.부가세 = function() {
+                    console.log(`부가세 : ${this.price / 10}`);
+                }
+            }
+
+            let product1 = new Product('shirts', 50000);
+            let product2 = new Product('pants', 60000);
+
+            product1.info();
+            product2.info();
+
+            product1.부가세();
+            product2.부가세();
+
+
+            /*
+                ** Prototype ( Constructor 의 유전자 )
+                Constructor 를 만들면 Prototype 이라는 공간이 자동으로 생성
+                Prototype 에 값을 추가하면 모든 자식들이 물려받기 가능
+
+                ** JS 에서 Prototype 동작 원리
+                1. student2 가 직접 gender 를 가지고 있는가?
+                2. student2 의 부모 유전자가 gender 를 가지고 있는가?
+                3. student2 의 부모의 부모 유전자가 gender 를 가지고 있는가?
+                ( Object 는 이런 순서로 자료를 출력 )
+
+                ** 특징
+                1. Prototype 은 함수 (Constructor) 에만 몰래 생성
+                ex) let arr1 = new Array(1,2,3); => prototype 사용 X (변수 arr1 은 Array Instance 이지 Array Constructor 는 아니기 때문)
+
+                2. 부모 유전자 ( 부모의 prototype ) 를 검사하고 싶다면 __proto__ 키워드 사용
+                ex) arr1.__proto__
+
+                3. __proto__ 를 이용해 부모 강제 등록 ( 잘 사용하지 않음 )
+
+                4. prototype chain
+
+            */
+
+            Student.prototype.gender = 'male';
+
+            let arr1 = [1, 2, 3];
+            let arr2 = new Array(1, 2, 3);  // 실제 array 가 만들어지는 방식
+
+            let obj1 = { name: 'Kim' };
+            let obj2 = new Object();  // 실제 Object 가 만들어지는 방식
+
+            let parent = { name : 'Kim' };
+            let child = {};
+            child.__proto__ = parent;
+
+
+            // exam 1.
+            Student.prototype.sayHi = function() {
+                console.log(`안녕하세요. 저는 ${this.name}입니다.`);
+            }
+
+            let student3 = new Student('Kim', 20);
+            let student4 = new Student('Park', 21);
+            let student5 = new Student('Lee', 22);
+
+            student3.sayHi();
+            student4.sayHi();
+            student5.sayHi();
+
+            // exam2. Kim
+            function Parent(){
+                this.name = 'Kim';
+            }
+
+            var a = new Parent();
+
+            a.__proto__.name = 'Park';
+            console.log(a.name);
+
+
+            // exam3. Arrow Function 은 상위(바깥)의 this 를 참조하기에, Student 가 아닌 window 에 sayHi 함수가 설정
+
+            Array.prototype.remove3 = function() {
+                for(let i = 0; i < this.length; i++) {
+                    if(this[i] === 3) {
+                        this.splice(i, 1);
+                    }
+                }
+            }
+
+            let testArr1 = [1, 2, 3];
+            let testArr2 = [1, 2, 3, 4, 5, 3, 7, 8, 3];
+            
+            testArr1.remove3();
+            testArr2.remove3();
+
+
+
+            /*
+                ES5 / ES6 문법으로 상속 기능 구현하는 방법
+
+                1. ES5
+                Object.create(Prototype Object);
+                => Constructor 아님
+
+
+                2. ES6
+                class
+
+                ** 함수 추가하는 방법
+                1. constructor 에 추가
+                => 자식이 직접 함수를 가짐
+
+                2. class 에 추가
+                => 부모.prototype 에 추가됨
+            */
+
+            let parent2 = { name : 'Kim', age : 50 };
+            let child2 = Object.create(parent2);
+            let sonja = Object.create(child2);
+
+
+            class parent3 {
+                constructor() {
+                    this.name = 'Kim';
+                    this.sayHi = function() {
+                        console.log('hello');
+                    }
+                }
+
+                sayHi2() {
+                    console.log('hello');
+                }
+
+                sayHello() {
+                    console.log('hello');
+                }
+            }
+
+            let child3 = new parent3();
+
+            // child3.__proto__ = Object.getPrototypeOf(child3)
+
+            parent3.prototype.sayHello2 = function() {
+                console.log('hello');
+            }
+
+            class Grandpa {
+                constructor(lastName, lastName2) {
+                    this.firstName = 'Kim';
+                    this.lastName = lastName;
+                    this.lastName2 = lastName2;
+                }
+
+                sayHi() {
+                    console.log('안녕 저는 할아버지에요');
+                }
+            }
+
+            let grandpa1 = new Grandpa('Cheol', 'Su');
+
+            class Father extends Grandpa {
+                constructor(lastName, lastName2) {
+                    super(lastName, lastName2); // 부모 class 의 constructor 를 의미
+                    this.age = 50;
+                }
+
+                sayHi() {
+                    console.log('안녕 저는 아버지에요');
+                    super.sayHi();  // 부모 class 의 prototype 을 의미
+                }
+            }
+
+            let father1 = new Father('In', 'Ho');
+        </script>
+    </body>
+</html>

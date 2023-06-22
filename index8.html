@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            /*
+                Destructuring 문법
+                Array, Object 값을 변수에 대입하기 위한 문법
+                등호로 기본 값 지정 가능
+                Object 의 경우, 변수명을 Key 명과 같아야 함
+            */
+
+            let arr = [2,3,4];
+            // let a = arr[0];
+            // let b = arr[1];
+
+            // let [a,b,c] = arr;
+            let [d,e,f = 10] = [2,3];
+
+            let obj = { name : 'Kim', age : 30 };
+            // let name = obj.name;
+            // let age = obj.age;
+
+            //let {name,age} = obj;
+            let {name : 나이, age = 31 } = { name : 'Kim' };
+            // let { name : 나이 = 'Park' } = {};
+
+            let obj2 = { name, age };  // {name : name, age : age} 와 동일
+
+            function test( {name, age} ) {
+                // name, age 라는 이름의 파라미터 변수 입력 가능
+                console.log(name);
+                console.log(age);
+            }
+
+            test(obj2);
+
+            let arr2 = [1, 2];
+
+            function test2( [name, age] ) {
+                console.log(name);
+                console.log(age);
+            }
+
+            test2(arr2);
+
+
+            // exam1.
+            // a : 'seoul', number : 30, address : 'seoul'
+            var [number, address] = [ 30, 'seoul' ];
+            var {address : a , number = 20 } = { address, number };
+
+
+            // exam2.
+            let info = {
+                body: {
+                    height: 190,
+                    weight: 70
+                },
+                size: ['shirts Large', 'pants 30inches']
+            }
+
+            // let {height, weight} = info.body;
+            // let [shirts, pants] = info.size;
+
+            let {
+                body: {
+                    height,
+                    weight
+                },
+                size: [shirts, pants]
+            } = info;
+        </script>
+    </body>
+</html>

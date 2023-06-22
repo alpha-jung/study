@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+
+        <label>asdfqwerzxcv</label>
+        <custom-input name="pwd"></custom-input>
+        <custom-input name="email"></custom-input>
+
+        <input type="range" />
+
+        <div id="mordor">
+
+        </div>
+
+        <template id="template1">
+            <label>이메일</label><input />
+            <style>label { color : red }</style>
+        </template>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+        <script>
+            /*
+                Web Components
+                JS 문법으로 구현할 수 있는 브라우저 기본 기능
+
+                Custom Tag
+                길고 복잡한 HTML 축약한 태그
+
+                ** 특징
+                1. HTML 중복 제거
+                2. 다른 페이지에서 재활용 가능
+                3. attribute 변경 감지 기능 제공
+            */
+
+            class test extends HTMLElement {
+                connectedCallback() {
+                    // this.innerHTML 보다 html 생성속도 빠름
+                    // let label = document.createElement('label');
+                    // this.appendChild(label);
+
+                    let name = this.getAttribute('name');
+                    
+                    this.attachShadow({mode : 'open'});
+                    // this.shadowRoot.innerHTML = `<label>${name}</label><input />
+                    //     <style>label { color : red }</style>
+                    // `;
+
+                    this.shadowRoot.append(template1.content.cloneNode(true));
+                    let label = this.shadowRoot.querySelector('label');
+                    label.addEventListener('click', function() {
+                        console.log("click");
+                    });
+                }
+
+                static get observedAttributes() {
+                    // 지정 attribute 바뀌는지 감시
+                    return ['name', 'email'];
+                }
+
+                attributeChangedCallback() {
+                    // 지정 attribbute 바뀌면 실행
+                    // 재렌더링 하고 싶을 경우, 여기에 코드 작성
+                    // ex) this.innerHTML = `<label>pwd</label><input />`;
+                    console.log(this.getAttribute('name'));
+                }
+            }
+
+            customElements.define('custom-input', test);
+
+
+            /*
+                Shadow DOM
+
+                Web Component + shadow DOM = 완벽한 HTML 모듈화
+                Shadow DOM 에 넣은 HTML, Style 은 외부에 영향 X
+                이벤트리스너 부착 가능
+
+                
+                Template
+
+                HTML 임시 보관함
+                렌더링되지 않음
+            */
+           
+            // shadow root 여는 함수
+            document.querySelector('#mordor').attachShadow({mode: 'open'});
+            document.querySelector('#mordor').shadowRoot.innerHTML = '<p>심연에서 왔도다</p>';
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+
+        <canvas id="canvas"></canvas>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        <script src="main.js"></script>
+
+        <script>
+            /*
+                Class 로 만드는 간단한 2D 게임
+
+
+                1. 화면에 네모, 원 그릴 수 있어야 함
+                2. 프레임마다 코드 실행 가능해야 함 ( 애니메이션 )
+                3. collision check ( 충돌 체크 ) 할 수 있어야 함
+            */
+
+            
+            /*
+                optional chaining 연산자
+                중첩된 오브젝트 자료가 있을 경우 사용
+                ?. 왼쪽이 null, undefined 라면 undefined return
+
+                nullish coalescing 연산자
+                ?? 왼쪽이 null, undefined 라면 오른쪽 값 return
+
+                사용처 : ajax 로 비동기 데이터 요청 중 데이터가 늦게 도착할 경우
+            */
+            let user = {
+                name : 'Kim',
+                age : { value: 20 }
+            };
+
+            console.log(user.age?.value); // user.age 안에 또 다른 Object 가 있으므로 의미 있음
+            console.log(user?.gender);  //user.gender 와 같은 의미이기에 의미 없음
+
+            console.log(undefined ?? '으잉');
+        </script>
+
+    </body>
+</html>

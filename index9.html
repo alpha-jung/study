@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script type="module">
+            // ES6 방식이어서 IE 에선 호환 X
+            // import 는 js 의 모든 내용을 가져오지 않음
+            // 선택한 js 에서 export 한 변수 가져옴
+            // import 하는 곳에선 export 와 변수명 동일하게 해야함
+            // export default 한 변수는 import 한 쪽에선 변수 내용 자유롭게 설정해도 됨
+            // export default 한 변수는 가장 왼쪽에 import
+            // as 를 사용하여 import 한 쪽에서 변수명을 새롭게 설정 가능
+            // import c, * as f from '/library.js' => js 가 export 하는 모든 변수를 import
+            // let imp = require('/library.js'); => 이전 import 하는 방식
+
+            import d, {a as e, b} from '/library.js'
+            
+            console.log(e);
+            console.log(b);
+            console.log(d);
+        </script>
+        <script>
+            
+        </script>
+
+    </body>
+</html>
