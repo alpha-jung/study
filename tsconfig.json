@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "CommonJS",
+        "declaration": true,
+        "typeRoots": ["./types"],  // 여기 있는 타입들은 글로벌하게 이용 가능
+        "esModuleInterop": true,
+        "noImplicitAny": true,  // any 라는 타입이 의도치 않게 발생할 경우, 에러 띄어주는 설정
+        "strictNullChecks": true  // null, undefined 타입에 이상한 조작하면 에러 띄우는 설정
+    }
+}
