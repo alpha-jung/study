@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link href="/public/main.css" rel="stylesheet" />
+        <Title>Document</Title>
+    </head>
+    <body>
+        <%- include('nav.html') %>
+
+        <div class="container p-4 detail">
+
+            <div class="row">
+                <div class="col-3">
+                    <ul class="list-group chat-list">
+                        <% for (let i=0; i < chatrooms.length; i++) { %>
+                            <li class="list-group-item" data-id="<%= chatrooms[i]._id %>">
+                                <h6><%= chatrooms[i].title %></h6>
+                                <h6 class="text-small"><%= chatrooms[i].member[0] %></h6>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+          
+                <div class="col-9 p-0">
+                    <div class="chat-room">
+                        <ul class="list-group chat-content">
+                            <!-- <li><span class="chat-box">채팅방1 내용</span></li>
+                            <li><span class="chat-box">채팅방1 내용</span></li>
+                            <li><span class="chat-box mine">채팅방1 내용</span></li> -->
+                        </ul>
+                        <div class="input-group">
+                            <input class="form-control" id="chat-input" />
+                            <button class="btn btn-secondary" id="send">전송</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+        <script>
+            let id;
+            let eventSource;
+
+            $('.list-group-item').click(function() {
+                id = this.dataset.id;
+
+                if(eventSource != undefined) {
+                    eventSource.close();
+                }
+
+                eventSource = new EventSource('/chat/message/' + id);
+
+                eventSource.addEventListener('test', function(e) {
+                    let message = JSON.parse(e.data);
+                    console.log(message);
+
+                    let template = "";
+
+                    for(let i = 0; i < message.length; i++) {
+                        template += `<li><span class='chat-box'>${message[i].content}</span></li>`;
+                    }
+
+                    $('.chat-content').html(template);
+                });
+            });
+
+            $('#send').click(function() {
+                if(id == '' || id == "undefined") {
+                    alert('채팅방을 선택해주세요.');
+                    return;
+                }
+
+                let content = $('#chat-input').val();
+
+                let data = {
+                    parent : id,
+                    content : content
+                };
+
+                $.post('/chat/message', data)
+                .then(() => {
+
+                })
+            });
+
+        </script>
+    </body>
+</html>
