@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            /* 
+                backtick / backqoute
+                ** 장점
+                1. 엔터키 가능
+                2. 중간에 변수 넣기 쉬움 ( HTML 작성 시 유용 )
+            */
+
+            var name = '손흥민';
+
+            // 이전 방식
+            var str = '안녕하세요 저는 ' + name + '입니다.';
+
+            // backtick 방식
+            var str2 = `안녕하세요 저는 ${name}입니다.`;
+            var template = `<div>${name}</div>`;
+
+            /*
+                tagged literal
+                `문자` 를 해체분석할 수 있음
+                단어 순서를 변경하거나, 제거하거나, ${변수} 위치를 옮기거나 할 수 있음
+                파라미터1 : 문자들을 Array 화 해줌
+                파라미터2, 3 ... : ${변수1}, ${변수2} ... 를 뜻함
+            */
+            function 해체분석기(문자들, 변수들) {
+                console.log(문자들[1] + 변수들 + 문자들[0]);
+            }
+
+            해체분석기`안녕하세요 저는 ${name} 입니다.`
+
+
+            var pants = 20;
+            var socks = 100;
+
+            function test(str, p1, p2) {
+                console.log(str[1] + p1 + " " + str[0] + p2);
+            }
+
+            test`바지${pants} 양말${socks}`;
+
+            function test2(str, p1, p2) {
+                if(p1 == 0) {
+                    console.log(`바지 안팔아요. 양말${p2}`);
+                } else {
+                    console.log(str[1] + p1 + " " + str[0] + p2);
+                }
+            }
+
+            var pants2 = 0;
+
+            test2`바지${pants2} 양말${socks}`;
+        </script>
+    </body>
+</html>

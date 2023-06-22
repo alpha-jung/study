@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            /* 
+                Spread Operator
+                ** 특징
+                1. Array 에 붙이면 대괄호 제거
+                2. String 에 붙이면 펼쳐줌
+                3. Array, Object 을 합치거나 복사 가능
+                4. Deep Copy 할 때 유용함
+                5. 값이 중복될 시, 가장 뒤에 있는 값으로 설정
+                6. 소괄호, 중괄호, 대괄호 안에서만 사용 가능
+            */
+            var arr = ['hello', 'world'];
+            console.log(...arr);    // console.log('hello world') 와 동일
+
+            var str = 'hello';
+            console.log(...str);    // console.log('h e l l o') 와 동일
+
+            var a = [1,2,3];
+            var b = [4,5];
+            var c = [...a];
+            var d = [...a, ...b];
+
+            console.log(c);
+            console.log(d);
+
+            //var e = a;  // 값을 공유 ( Reference Data Type (Array, Object) 가 해당 )
+            var e = [...a]; // Deep Copy : 독립적인 자료에 복사할 값을 넣는 방법
+            a[3] = 4;
+
+            console.log(a);
+            console.log(e);
+
+            var o1 = { a : 1, b : 2 };
+            var o2 = { ...o1, c : 3 };
+            var o3 = { ...o1 };
+            var o4 = { a : 2, ...o1 };
+
+            console.log(o1);
+            console.log(o2);
+            console.log(o3);
+            console.log(o4);
+
+
+            function add(a, b, c) {
+                console.log(a + b + c);
+            }
+
+            add.apply(undefined, a);  // 이전 방식
+            add(...a);
+
+            /*
+                apply 함수 : 특정 함수의 기능을 다른 함수에도 적용하고 싶을 때 사용
+                call 함수 : apply 와 비슷하지만 파라미터 넣는 방법이 다름
+
+                ex)
+                person.hello.apply(person2, [1, 2]);
+                person.hello.call(person2, 1,2);
+            */
+
+            var person = {
+                hello : function() {
+                    console.log(this.name + ' hello');
+                }
+            }
+
+            var person2 = {
+                name : '손흥민'
+            }
+
+            person.hello();
+            person.hello.apply(person2);
+            person.hello.call(person2);
+        </script>
+    </body>
+</html>

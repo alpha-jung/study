@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+        <script>
+            /*
+                ** 반복문 종류
+                1. for
+                2. forEach ( Array 전용 )
+                3. for in ( Object 전용 )
+                  > 특징
+                  > 1. enumerable 한 데이터만 반복 ( 셀 수 있는지 여부 )
+                  > 2. 부모의 prototype 도 반복 ( 부모 prototype 까지 반복할 일은 별로 없음 )
+                  > 3. Object 자료형에만 사용 ( enumerable 한 데이터에만 사용 )
+
+                4. for of ( iterable 전용)
+                  > 특징
+                  > 1. Array, 문자, arguments, NodeList, Map, Set 등의 데이터에 사용
+                  > 2. iterable 한 데이터만 사용 가능
+            */
+
+            class Parent {
+
+            }
+
+            Parent.prototype.name = 'Park';
+
+            let obj = { name : 'Kim', age : 30 };
+            let obj2 = new Parent();
+
+            // Object 의 숨겨진 정보 출력
+            // writable, enumerable, configurable 이란 정보 출력
+            // console.log(Object.getOwnPropertyDescriptor(obj, 'name'));
+
+            for(let key in obj) {
+                console.log(key + " , " + obj[key]);
+            }
+
+            for(let key in obj2) {
+                // 해당 Object 가 직접 가지고 있는 값만 반복시키고 싶을 경우 사용
+                if(obj2.hasOwnProperty(key)) {
+                    console.log(key + " , " + obj2[key]);
+                }   
+            }
+
+
+            let arr = [2, 3, 4, 5];
+
+            for(let data of arr) {
+            // for(let data of 'asdfqwerzxcv') {
+                console.log(data);
+            }
+
+
+            /*
+                Symbol
+                ES6 에 추가된 자료형
+                별로 쓸데는 없음
+
+                나온 이유 : Object 자로형의 비밀스런 Key 값으로 사용 가능
+
+                ** 특징
+                1. 설명이 같다고 같은 Symbol 은 아님
+                    > Symbol 을 만들 때마다 유니크한 Symbol 이 생김
+
+                2. Symbol.for() 로 전역 Symbol 생성
+
+                3. 기본 내장 Symbol들
+            */
+
+            let symb = Symbol('설명');
+            let weight = Symbol('내 몸무게');
+            let height = Symbol('내 키');
+
+            let person = { name : 'Kim' };
+            person.weight = 100;
+            person[weight] = 200;   // enumberable 하지 않기 때문에 반복문 출력 X
+            person[height] = 170;
+
+            for(let key in person) {
+                console.log(key + " , " + person[key]);
+            }
+
+            
+            // a === b : true
+            // a === c : false
+            let a = Symbol.for('설명1');
+            let b = Symbol.for('설명1');
+            let c = Symbol('설명1');
+        </script>
+
+    </body>
+</html>

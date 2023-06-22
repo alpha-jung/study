@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <button id="btn">버튼</button>
+
+        <script>
+            // 엄격한 모드로 실행
+            // 'use strict';
+    
+            // script 에서 this 의 의미는 window
+            // 함수나 변수를 전역공간에서 만들면 window 에 보관
+            console.log(this);
+    
+            function test() {
+                console.log(this);
+            }
+    
+            test();  // window.test() 같은 의미
+    
+            let obj = {
+                data: 'Kim',
+                func: function() {
+                    console.log(this);
+                }
+            }
+    
+            let obj2 = {
+                data : {
+                    func : function() {
+                        console.log(this);
+                    }
+                },
+                data2 : {
+                    func : () => {
+                        console.log(this);
+                    }
+                }
+            }
+    
+            console.log(obj.data);
+    
+            // object 내의 함수에서 this 의 의미는 그 함수를 포함하고 있는 오브젝트
+            obj.func();
+    
+            // object 내의 data 를 뜻 함
+            obj2.data.func();
+    
+            // arrow function 은 this 값을 함수밖에 있던거 그대로 씀
+            obj2.data2.func();
+    
+    
+    
+            // 기계 안에서 쓰면 새로 생성되는 오브젝트를 뜻함
+            // Contructor
+            function machine() {
+                // 새로 생성되는 오브젝트
+                // instance
+                this.name = 'Kim';
+            }
+    
+            let machineObj = new machine();
+            console.log(machineObj);
+    
+            document.getElementById('btn').addEventListener('click', function(e) {
+                // 이벤트리스너 안에서는 e.currentTarget 과 같은 의미
+                // console.log(this);
+                // console.log(e.currentTarget);
+
+                let arr = [ 1, 2, 3];
+
+                // 함수 안의 함수를 콜백함수라 함
+                arr.forEach(function(a) {
+                    console.log(this);
+                });
+
+                // let text = this.innerHTML;
+
+                // setTimeout(function() {
+                //     console.log(text);
+                // }, 1000);
+
+                setTimeout(() => {
+                    console.log(this.innerHTML);
+                }, 1000);
+            });
+
+
+            let obj3 = {
+                names : ['김', '이', '박'],
+                func : function() {
+                    obj3.names.forEach(function(a) {
+                        console.log(this);
+                    });
+
+                    // arrow function 은 내부의 this 값을 변화시키지 않음
+                    obj3.names.forEach((a) => {
+                        console.log(this);
+                    });
+                }
+            }
+
+            obj3.func();
+
+            /*
+                Arrow Function 장점
+                1. 입출력 기계 만들 때 보기 쉬움
+                2. 소괄호 생략 가능
+                3. 코드 한줄이면 중괄호도 생략 가능
+                ex) let func1 = a => a + 10;
+                ex) let func1 = (a,b) => a + b;
+                ex) [1,2,3,4].forEach(a => console.log(a) );
+                ex) document.getElementByd('btn').addEventListener('click', (e) => {});
+            */
+
+            let person = {
+                name: '손흥민',
+                /*sayHi : function() {
+                    console.log('안녕 나는 ' + this.name);
+                }*/
+            }
+
+            person.sayHi = function() {
+                console.log('안녕 나는 ' + this.name);
+            };
+
+            person.sayHi();
+
+            let test1 = {
+                data : [1,2,3,4,5]
+            };
+
+            // let sum = 0;
+
+            // test1.data.forEach((a) => {
+            //     sum += a;
+            // });
+
+            // console.log(sum);
+
+            test1.sumFunc = function() {
+                let sum = 0;
+
+                this.data.forEach((a) => {
+                    sum += a;
+                });
+
+                console.log(sum);
+            }
+
+            test1.sumFunc();
+        </script>
+    </body>
+</html>
